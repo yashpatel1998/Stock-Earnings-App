@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Stock Earnings</string>
+    <string name="sample_profit_value">7500</string>
+    <string name="profit">Net Profit</string>
+    <string name="user_account_button_description">User Account Button</string>
+    <string name="menu_button_description">Side Menu Button</string>
 </resources>
