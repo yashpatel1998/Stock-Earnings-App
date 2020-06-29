@@ -41,8 +41,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
+                android:layout_marginVertical="2dp"
+                android:text="ISIN : "
+                android:fontFamily="@font/roboto"
+                android:textSize="16dp"
+                android:textColor="@color/pureBlack" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
                 android:text="Profit : 10000"
+                android:textSize="16dp"
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/pureBlack" />
         </LinearLayout>
@@ -53,6 +63,7 @@
             android:orientation="vertical"
             android:layout_marginStart="4dp"
             android:layout_marginVertical="4dp"
+            android:paddingTop="4dp"
             android:layout_columnWeight="1">
 
             <TextView
