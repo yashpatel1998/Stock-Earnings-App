@@ -8,6 +8,24 @@ public class Stock {
     private int quantityBought;
     private double netProfit;
     private double netPurchasePrice;
+    private double totalPurchasePrice;
+    private double currentPrice;
+
+    public double getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(double currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public double getTotalPurchasePrice() {
+        return totalPurchasePrice;
+    }
+
+    public void setTotalPurchasePrice(double totalPurchasePrice) {
+        this.totalPurchasePrice = totalPurchasePrice;
+    }
 
     public String getISIN_Number() {
         return ISIN_Number;
@@ -66,6 +84,15 @@ public class Stock {
     }
 
     public void calculateNetPurchasePrice() {
-
+        this.netPurchasePrice = (this.getPurchasePrice() * this.getQuantityBought()) / (this.getQuantityBought() + this.getQuantityReceived());
     }
+
+    public void calculateTotalPurchasePrice() {
+        this.totalPurchasePrice = this.getPurchasePrice() * this.getQuantityBought();
+    }
+
+    public void calculateProfit() {
+        this.netProfit = (this.getQuantityBought() + this.getQuantityReceived()) * (this.getCurrentPrice() - this.getNetPurchasePrice());
+    }
+
 }
