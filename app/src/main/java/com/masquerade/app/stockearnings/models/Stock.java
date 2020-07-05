@@ -11,6 +11,19 @@ public class Stock {
     private double totalPurchasePrice;
     private double currentPrice;
 
+    public Stock(String ISIN_Number, String stockName, double purchasePrice, int quantityReceived,
+                 int quantityBought, double currentPrice) {
+        this.ISIN_Number = ISIN_Number;
+        this.stockName = stockName;
+        this.purchasePrice = purchasePrice;
+        this.quantityReceived = quantityReceived;
+        this.quantityBought = quantityBought;
+        this.currentPrice = currentPrice;
+        this.calculateNetPurchasePrice();
+        this.calculateTotalPurchasePrice();
+        this.calculateProfit();
+    }
+
     public double getCurrentPrice() {
         return currentPrice;
     }
