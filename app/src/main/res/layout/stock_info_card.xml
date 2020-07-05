@@ -1,31 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?><!--
+@todo
+    Fix the layout for the text fields and also fix margin issues.
+    check how to equally divide the grids
+-->
+<com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardBackgroundColor="@color/profitColor"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp"
+    android:padding="8dp"
     android:clickable="true"
     android:focusable="true"
     android:checkable="true"
-    android:elevation="2dp"
-    app:cardCornerRadius="4dp">
+    android:elevation="4dp"
+    app:cardCornerRadius="8dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <GridLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:rowCount="1"
-        android:columnCount="2"
-        android:alignmentMode="alignMargins"
-        android:padding="8dp"
-        android:layout_marginEnd="4dp"
-        android:useDefaultMargins="true">
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="8dp">
 
-        <!-- Row 1 Col 1 -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rowCount="1"
+            android:columnCount="2"
+            android:alignmentMode="alignMargins"
+            android:padding="8dp"
+            android:layout_marginEnd="4dp"
+            android:useDefaultMargins="true">
+
+            <!-- Row 1 Col 1 -->
         <LinearLayout
             android:layout_height="match_parent"
-            android:layout_width="wrap_content"
             android:orientation="vertical"
             android:layout_columnWeight="1">
 
@@ -61,7 +69,6 @@
 
         <LinearLayout
             android:layout_height="match_parent"
-            android:layout_width="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="4dp"
             android:layout_marginVertical="4dp"
@@ -104,6 +111,6 @@
                 android:textColor="@color/pureBlack"
                 android:id="@+id/stock_purchase_price" />
         </LinearLayout>
-
-    </GridLayout>
+        </GridLayout>
+    </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

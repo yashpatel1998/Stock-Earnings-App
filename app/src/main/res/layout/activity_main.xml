@@ -68,7 +68,8 @@
                 android:padding="16dp"
                 android:text="@string/sample_profit_value"
                 android:textColor="@color/pureBlack"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:id="@+id/profit_amount" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -86,6 +87,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:background="@drawable/circle"
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/add_icon_32"
         app:layout_constraintEnd_toEndOf="@id/constraint_layout"
         app:layout_constraintBottom_toBottomOf="@id/constraint_layout"

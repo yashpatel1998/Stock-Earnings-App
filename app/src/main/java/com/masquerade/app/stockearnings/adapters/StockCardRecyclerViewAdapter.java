@@ -11,10 +11,14 @@ import com.masquerade.app.stockearnings.holders.*;
 import com.masquerade.app.stockearnings.models.Stock;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static androidx.core.content.ContextCompat.getColor;
 
 public class StockCardRecyclerViewAdapter extends RecyclerView.Adapter<StockCardRecyclerViewHolder> {
 
@@ -41,15 +45,20 @@ public class StockCardRecyclerViewAdapter extends RecyclerView.Adapter<StockCard
     @Override
     public void onBindViewHolder(@NonNull StockCardRecyclerViewHolder holder, int i) {
         holder.getStockName().setText(stock.get(i).getStockName());
-        holder.getStockISIN().setText(stock.get(i).getISIN_Number());
-        holder.getStockProfit().setText(String.format(Locale.ENGLISH, "%.2f",
+        holder.getStockISIN().setText("ISIN: " + stock.get(i).getISIN_Number());
+        holder.getStockProfit().setText("Profit: " + String.format(Locale.ENGLISH, "%.2f",
                 stock.get(i).getNetProfit()));
-        holder.getStockQuantityPurchased().setText(String.valueOf(stock.get(i).getQuantityBought()));
-        holder.getStockQuantityReceived().setText(String.valueOf(stock.get(i).getQuantityReceived()));
-        holder.getStockCurrentPrice().setText(String.format(Locale.ENGLISH, "%.2f",
+        holder.getStockQuantityPurchased().setText("Q: " + String.valueOf(stock.get(i).getQuantityBought()));
+        holder.getStockQuantityReceived().setText("QR :" + String.valueOf(stock.get(i).getQuantityReceived()));
+        holder.getStockCurrentPrice().setText("Current Price :" + String.format(Locale.ENGLISH, "%.2f",
                 stock.get(i).getCurrentPrice()));
-        holder.getStockPurchasePrice().setText(String.format(Locale.ENGLISH, "%.2f",
+        holder.getStockPurchasePrice().setText("Purchase Price: " + String.format(Locale.ENGLISH, "%.2f",
                 stock.get(i).getPurchasePrice()));
+        if (stock.get(i).getNetProfit() < 0) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(currentContext, R.color.lossColor));
+        } else if (stock.get(i).getNetProfit() > 0 && stock.get(i).getNetProfit() < 200) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(currentContext, R.color.flatColor));
+        }
     }
 
     @Override
