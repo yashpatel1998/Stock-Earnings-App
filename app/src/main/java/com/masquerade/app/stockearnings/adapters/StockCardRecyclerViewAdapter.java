@@ -37,7 +37,7 @@ public class StockCardRecyclerViewAdapter extends RecyclerView.Adapter<StockCard
     public StockCardRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View stockRecyclerView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.stock_info_card, null);
+                R.layout.stock_info_card, parent, false);
 
         return new StockCardRecyclerViewHolder(stockRecyclerView);
     }
@@ -58,6 +58,8 @@ public class StockCardRecyclerViewAdapter extends RecyclerView.Adapter<StockCard
             holder.itemView.setBackgroundColor(ContextCompat.getColor(currentContext, R.color.lossColor));
         } else if (stock.get(i).getNetProfit() > 0 && stock.get(i).getNetProfit() < 200) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(currentContext, R.color.flatColor));
+        } else {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(currentContext, R.color.profitColor));
         }
     }
 

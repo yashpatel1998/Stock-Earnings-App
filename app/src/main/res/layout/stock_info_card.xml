@@ -6,58 +6,60 @@
 <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="@color/profitColor"
-    android:padding="8dp"
     android:clickable="true"
     android:focusable="true"
     android:checkable="true"
     android:elevation="4dp"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="16dp"
+    android:layout_marginVertical="8dp"
+    android:layout_marginHorizontal="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginVertical="16dp"
-        android:layout_marginHorizontal="8dp">
+        android:layout_marginHorizontal="8dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:rowCount="1"
-            android:columnCount="2"
-            android:alignmentMode="alignMargins"
-            android:padding="8dp"
-            android:layout_marginEnd="4dp"
-            android:useDefaultMargins="true">
+        <!--        <GridLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:rowCount="1"-->
+        <!--            android:columnCount="2"-->
+        <!--            android:alignmentMode="alignMargins"-->
+        <!--            android:layout_marginEnd="4dp"-->
+        <!--            android:useDefaultMargins="true">-->
 
-            <!-- Row 1 Col 1 -->
+        <!-- Row 1 Col 1 -->
         <LinearLayout
             android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_columnWeight="1">
+            android:layout_weight="2">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Reliance Industries"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:fontFamily="@font/roboto_condensed_bold"
                 android:textColor="@color/pureBlack"
                 android:id="@+id/stock_name" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="2dp"
                 android:text="ISIN : "
                 android:fontFamily="@font/roboto"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textColor="@color/pureBlack"
                 android:id="@+id/stock_ISIN" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
                 android:text="Profit : 10000"
@@ -69,14 +71,15 @@
 
         <LinearLayout
             android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_marginStart="4dp"
+            android:layout_weight="2"
             android:layout_marginVertical="4dp"
-            android:paddingTop="4dp"
-            android:layout_columnWeight="1">
+            android:paddingTop="4dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Q: 25"
                 android:textSize="16sp"
@@ -85,7 +88,7 @@
                 android:id="@+id/stock_quantity_purchased" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="QR: 30"
                 android:textSize="16sp"
@@ -94,7 +97,7 @@
                 android:id="@+id/stock_quantity_received" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Current Price: 1750"
                 android:textSize="16sp"
@@ -103,7 +106,7 @@
                 android:id="@+id/stock_current_price" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Purchase Price: 1750"
                 android:textSize="16sp"
@@ -111,6 +114,6 @@
                 android:textColor="@color/pureBlack"
                 android:id="@+id/stock_purchase_price" />
         </LinearLayout>
-        </GridLayout>
-    </RelativeLayout>
+        <!--        </GridLayout>-->
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
