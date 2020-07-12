@@ -8,4 +8,5 @@
     <color name="flatColor">#F9DB70</color>
     <color name="pureBlack">#000000</color>
     <color name="pureWhite">#FFFFFF</color>
+    <color name="greyish">#DEDEDE</color>
 </resources>

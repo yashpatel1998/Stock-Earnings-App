@@ -4,26 +4,42 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.masquerade.app.stockearnings.adapters.StockCardRecyclerViewAdapter;
 import com.masquerade.app.stockearnings.models.Stock;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
+import com.masquerade.app.stockearnings.activities.AddStockActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView stockRecyclerView;
     StockCardRecyclerViewAdapter stockCardRecyclerViewAdapter;
     TextView netProfitTextView;
+    FloatingActionButton addStockBUtton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        stockRecyclerView = findViewById(R.id.stock_card_recyclerview);
-        stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        /*      Floating action button task                     */
+        addStockBUtton = findViewById(R.id.fab);
+        addStockBUtton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addStockIntent = new Intent(MainActivity.this, AddStockActivity.class);
+                startActivity(addStockIntent);
+            }
+        });
+
+        /*      Floating action button task                     */
         /*
          * @todo
          *   Create a dedicated user class which will do the following
@@ -32,12 +48,18 @@ public class MainActivity extends AppCompatActivity {
          *       - Have support for google account sign in
          *       - Store the data online as well as local storage
          * */
-        netProfitTextView = (TextView) findViewById(R.id.profit_amount);
+        /*      To populate the recycler view with card         */
+        stockRecyclerView = findViewById(R.id.stock_card_recyclerview);
+        stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        netProfitTextView = findViewById(R.id.profit_amount);
         ArrayList<Stock> stockList = getUserSubscribedStockList();
         double netProfit = getNetProfit(stockList);
         netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", netProfit));
         stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockList);
         stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
+        /*      To populate the recycler view with card         */
+
+
     }
 
     private double getNetProfit(ArrayList<Stock> stockList) {

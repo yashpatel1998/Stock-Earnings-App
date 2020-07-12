@@ -89,6 +89,7 @@
         android:background="@drawable/circle"
         android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/add_icon_32"
+        app:tint="@color/pureWhite"
         app:layout_constraintEnd_toEndOf="@id/constraint_layout"
         app:layout_constraintBottom_toBottomOf="@id/constraint_layout"
         app:layout_constraintStart_toStartOf="@id/constraint_layout" />
