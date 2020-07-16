@@ -48,7 +48,6 @@
             android:layout_marginHorizontal="8dp" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ISIN_number_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ISIN_number"
@@ -57,12 +56,12 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+                android:id="@+id/ISIN_number_editText"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/quantity_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quantity"
@@ -71,12 +70,12 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+                android:id="@+id/quantity_editText"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/purchase_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/purhcase_price"
@@ -86,11 +85,11 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:id="@+id/purchase_editText"
+                android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/quantity_received_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quantity_received"
@@ -99,8 +98,19 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:id="@+id/quantity_received_editText"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="150dp"
+            android:layout_height="64dp"
+            android:text="@string/add_stock"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            app:cornerRadius="8dp"
+            android:id="@+id/submitButton" />
     </LinearLayout>
 </RelativeLayout>

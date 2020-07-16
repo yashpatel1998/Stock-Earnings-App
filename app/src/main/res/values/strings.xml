@@ -10,4 +10,5 @@
     <string name="quantity">Quantity</string>
     <string name="purhcase_price">Purchase Price</string>
     <string name="quantity_received">Quantity Received</string>
+    <string name="add_stock"> Add Stock</string>
 </resources>
