@@ -6,7 +6,7 @@
     <string name="menu_button_description">Side Menu Button</string>
     <string name="add_stock_heading"> Enter Stock Details</string>
     <string name="stock_isin_hint"> Enter ISIN number</string>
-    <string name="ISIN_number">ISIN Number</string>
+    <string name="scripCode">Scrip Code</string>
     <string name="quantity">Quantity</string>
     <string name="purhcase_price">Purchase Price</string>
     <string name="quantity_received">Quantity Received</string>

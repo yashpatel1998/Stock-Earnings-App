@@ -1,7 +1,7 @@
 package com.masquerade.app.stockearnings.models;
 
 public class Stock {
-    private String ISIN_Number;
+    private String scripCode;
     private String stockName;
     private double purchasePrice;
     private int quantityReceived;
@@ -11,9 +11,9 @@ public class Stock {
     private double totalPurchasePrice;
     private double currentPrice;
 
-    public Stock(String ISIN_Number, String stockName, double purchasePrice, int quantityReceived,
+    public Stock(String scripCode, String stockName, double purchasePrice, int quantityReceived,
                  int quantityBought, double currentPrice) {
-        this.ISIN_Number = ISIN_Number;
+        this.scripCode = scripCode;
         this.stockName = stockName;
         this.purchasePrice = purchasePrice;
         this.quantityReceived = quantityReceived;
@@ -40,12 +40,12 @@ public class Stock {
         this.totalPurchasePrice = totalPurchasePrice;
     }
 
-    public String getISIN_Number() {
-        return ISIN_Number;
+    public String getScripCode() {
+        return scripCode;
     }
 
-    public void setISIN_Number(String ISIN_Number) {
-        this.ISIN_Number = ISIN_Number;
+    public void setScripCode(String scripCode) {
+        this.scripCode = scripCode;
     }
 
     public String getStockName() {

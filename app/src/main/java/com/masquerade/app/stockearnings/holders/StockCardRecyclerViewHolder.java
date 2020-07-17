@@ -77,6 +77,6 @@ public class StockCardRecyclerViewHolder extends RecyclerView.ViewHolder {
         this.stockCurrentPrice = itemView.findViewById(R.id.stock_current_price);
         this.stockProfit = itemView.findViewById(R.id.stock_profit);
         this.stockName = itemView.findViewById(R.id.stock_name);
-        this.stockISIN = itemView.findViewById(R.id.stock_ISIN);
+        this.stockISIN = itemView.findViewById(R.id.stock_scrip_code);
     }
 }

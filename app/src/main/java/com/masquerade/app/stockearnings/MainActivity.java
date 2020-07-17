@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     StockCardRecyclerViewAdapter stockCardRecyclerViewAdapter;
     TextView netProfitTextView;
     FloatingActionButton addStockBUtton;
+    ArrayList<Stock> stockData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
 
     protected ArrayList<Stock> getUserSubscribedStockList() {
         ArrayList<Stock> temp = new ArrayList<>();
-        temp.add(new Stock("INE030A01027", "Hindustan Uniliver", 183.57
+        temp.add(new Stock("500696 ", "Hindustan Uniliver", 183.57
                 , 0, 100, 183.62));
-        temp.add(new Stock("INE467B01029", "TCS Ltd", 1012.02
+        temp.add(new Stock("532540", "TCS Ltd", 1012.02
                 , 30, 10, 2156.5));
-        temp.add(new Stock("INE002A01018", "Reliance Industries", 1043.8
+        temp.add(new Stock("500325 ", "Reliance Industries", 1043.8
                 , 0, 25, 900));
         return temp;
     }

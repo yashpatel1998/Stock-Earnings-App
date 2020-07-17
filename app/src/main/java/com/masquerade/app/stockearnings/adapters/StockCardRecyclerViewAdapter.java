@@ -1,7 +1,6 @@
 package com.masquerade.app.stockearnings.adapters;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,10 @@ import com.masquerade.app.stockearnings.models.Stock;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Locale;
-
-import static androidx.core.content.ContextCompat.getColor;
 
 public class StockCardRecyclerViewAdapter extends RecyclerView.Adapter<StockCardRecyclerViewHolder> {
 
@@ -45,7 +41,7 @@ public class StockCardRecyclerViewAdapter extends RecyclerView.Adapter<StockCard
     @Override
     public void onBindViewHolder(@NonNull StockCardRecyclerViewHolder holder, int i) {
         holder.getStockName().setText(stock.get(i).getStockName());
-        holder.getStockISIN().setText("ISIN: " + stock.get(i).getISIN_Number());
+        holder.getStockISIN().setText("Scrip Code: " + stock.get(i).getScripCode());
         holder.getStockProfit().setText("Profit: " + String.format(Locale.ENGLISH, "%.2f",
                 stock.get(i).getNetProfit()));
         holder.getStockQuantityPurchased().setText("Q: " + String.valueOf(stock.get(i).getQuantityBought()));
