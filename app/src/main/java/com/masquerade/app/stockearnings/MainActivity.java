@@ -1,11 +1,13 @@
 package com.masquerade.app.stockearnings;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,11 +26,18 @@ public class MainActivity extends AppCompatActivity {
     StockCardRecyclerViewAdapter stockCardRecyclerViewAdapter;
     TextView netProfitTextView;
     FloatingActionButton addStockBUtton;
-    ArrayList<Stock> stockData;
+    TextView noStockEnteredByUser;
+    public static ArrayList<Stock> stockData = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        stockRecyclerView = findViewById(R.id.stock_card_recyclerview);
+        noStockEnteredByUser = findViewById(R.id.noStockEnteredByUser);
+        stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        netProfitTextView = findViewById(R.id.profit_amount);
 
         /*      Floating action button task                     */
         addStockBUtton = findViewById(R.id.fab);
@@ -36,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent addStockIntent = new Intent(MainActivity.this, AddStockActivity.class);
-                startActivity(addStockIntent);
+                startActivityForResult(addStockIntent, 999);
             }
         });
-
         /*      Floating action button task                     */
+
         /*
          * @todo
          *   Create a dedicated user class which will do the following
@@ -49,18 +58,29 @@ public class MainActivity extends AppCompatActivity {
          *       - Have support for google account sign in
          *       - Store the data online as well as local storage
          * */
+
         /*      To populate the recycler view with card         */
-        stockRecyclerView = findViewById(R.id.stock_card_recyclerview);
-        stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        netProfitTextView = findViewById(R.id.profit_amount);
-        ArrayList<Stock> stockList = getUserSubscribedStockList();
-        double netProfit = getNetProfit(stockList);
-        netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", netProfit));
-        stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockList);
-        stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
+        if (stockData.isEmpty()) {
+            stockRecyclerView.setVisibility(View.GONE);
+            noStockEnteredByUser.setVisibility(View.VISIBLE);
+        } else {
+            stockRecyclerView.setVisibility(View.VISIBLE);
+            noStockEnteredByUser.setVisibility(View.GONE);
+            createRecyclerView();
+        }
         /*      To populate the recycler view with card         */
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 999 && resultCode == RESULT_OK) {
+            Stock newStock = (Stock) data.getSerializableExtra("newStock");
+            Log.i("New Stock Info", newStock.getStockName());
+            stockData.add(newStock);
+        }
     }
 
     private double getNetProfit(ArrayList<Stock> stockList) {
@@ -71,14 +91,28 @@ public class MainActivity extends AppCompatActivity {
         return prof;
     }
 
-    protected ArrayList<Stock> getUserSubscribedStockList() {
-        ArrayList<Stock> temp = new ArrayList<>();
-        temp.add(new Stock("500696 ", "Hindustan Uniliver", 183.57
+    protected void getUserSubscribedStockList() {
+        stockData.add(new Stock("500696 ", "Hindustan Uniliver", 183.57
                 , 0, 100, 183.62));
-        temp.add(new Stock("532540", "TCS Ltd", 1012.02
+        stockData.add(new Stock("532540", "TCS Ltd", 1012.02
                 , 30, 10, 2156.5));
-        temp.add(new Stock("500325 ", "Reliance Industries", 1043.8
+        stockData.add(new Stock("500325 ", "Reliance Industries", 1043.8
                 , 0, 25, 900));
-        return temp;
+    }
+
+    public void createRecyclerView() {
+        double netProfit = getNetProfit(stockData);
+        netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", netProfit));
+        stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockData);
+        stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        double netProfit = getNetProfit(stockData);
+        netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", netProfit));
+        stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockData);
+        stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
     }
 }

@@ -3,6 +3,7 @@ package com.masquerade.app.stockearnings.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -12,12 +13,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.masquerade.app.stockearnings.MainActivity;
 import com.masquerade.app.stockearnings.R;
 import com.masquerade.app.stockearnings.exceptions.*;
+import com.masquerade.app.stockearnings.models.Stock;
 import com.masquerade.app.stockearnings.utilities.StockDataInputValidator;
 import com.masquerade.app.stockearnings.utilities.StockDetailsAPI;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class AddStockActivity extends AppCompatActivity {
@@ -62,6 +66,9 @@ public class AddStockActivity extends AppCompatActivity {
                          * */
                         StockDetailsAPI stockDetailsFetcher = new StockDetailsAPI(scripCode);
                         ArrayList<String> stockData = stockDetailsFetcher.fetchStockDetails();
+                        Stock newStockData = new Stock(scripCode, stockData.get(0), purchasePrice, quantityReceived, quantity, Double.parseDouble(stockData.get(1)));
+                        MainActivity.stockData.add(newStockData);
+                        // Add Stock to sql data base
 
                     }
                 } catch (QuantityZeroException quantityException) {
