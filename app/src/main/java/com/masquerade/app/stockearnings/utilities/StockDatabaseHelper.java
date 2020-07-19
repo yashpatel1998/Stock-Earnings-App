@@ -1,8 +1,10 @@
 package com.masquerade.app.stockearnings.utilities;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -35,4 +37,21 @@ public class StockDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
+
+    public boolean insertData(String scripCode, String companyName, double purchasePrice,
+                              double currentPrice, int quantityBought, int quantityReceived,
+                              double profit) {
+        SQLiteDatabase stockdb = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SCRIP_CODE_COL, Integer.parseInt(scripCode));
+        cv.put(COMPANY_NAME_COL, companyName);
+        cv.put(PURCHASE_PRICE_COL, purchasePrice);
+        cv.put(CURRENT_PRICE_COL, currentPrice);
+        cv.put(QUANTITY_BOUGHT_COL, quantityBought);
+        cv.put(QUANTITY_RECEIVED_COL, quantityReceived);
+        cv.put(PROFIT_COL, profit);
+        long result = stockdb.insert(TABLE_NAME, null, cv);
+        return result != -1;
+    }
+
 }

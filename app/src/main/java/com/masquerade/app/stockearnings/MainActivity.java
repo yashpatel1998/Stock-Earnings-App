@@ -19,9 +19,11 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import com.masquerade.app.stockearnings.activities.AddStockActivity;
+import com.masquerade.app.stockearnings.utilities.StockDatabaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 
+    StockDatabaseHelper stockDB;
     RecyclerView stockRecyclerView;
     StockCardRecyclerViewAdapter stockCardRecyclerViewAdapter;
     TextView netProfitTextView;
@@ -34,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        /*      TESTING THE DATABASE CREATION           */
+
+        testDatabase();
+
+        /*      TESTING THE DATABASE CREATION           */
+
+
         stockRecyclerView = findViewById(R.id.stock_card_recyclerview);
         noStockEnteredByUser = findViewById(R.id.noStockEnteredByUser);
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -45,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent addStockIntent = new Intent(MainActivity.this, AddStockActivity.class);
-                startActivityForResult(addStockIntent, 999);
+                startActivity(addStockIntent);
             }
         });
         /*      Floating action button task                     */
@@ -71,16 +81,6 @@ public class MainActivity extends AppCompatActivity {
         /*      To populate the recycler view with card         */
 
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 999 && resultCode == RESULT_OK) {
-            Stock newStock = (Stock) data.getSerializableExtra("newStock");
-            Log.i("New Stock Info", newStock.getStockName());
-            stockData.add(newStock);
-        }
     }
 
     private double getNetProfit(ArrayList<Stock> stockList) {
@@ -114,5 +114,9 @@ public class MainActivity extends AppCompatActivity {
         netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", netProfit));
         stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockData);
         stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
+    }
+
+    protected void testDatabase() {
+        stockDB = new StockDatabaseHelper(this);
     }
 }

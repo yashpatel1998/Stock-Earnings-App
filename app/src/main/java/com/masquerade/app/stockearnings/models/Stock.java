@@ -104,8 +104,11 @@ public class Stock {
         this.totalPurchasePrice = this.getPurchasePrice() * this.getQuantityBought();
     }
 
-    public void calculateProfit() {
+    public double calculateProfit() {
+        this.calculateNetPurchasePrice();
+        this.calculateTotalPurchasePrice();
         this.netProfit = (this.getQuantityBought() + this.getQuantityReceived()) * (this.getCurrentPrice() - this.getNetPurchasePrice());
+        return this.netProfit;
     }
 
 }
