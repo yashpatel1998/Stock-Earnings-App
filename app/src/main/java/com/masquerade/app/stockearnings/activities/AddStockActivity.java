@@ -72,12 +72,6 @@ public class AddStockActivity extends AppCompatActivity {
                             scripCode, quantity, purchasePrice, quantityReceived
                     );
                     if (stockDataValidatorObject.validateData()) {
-                        /*
-                         * @todo
-                         *   Send the data upon add stock button click to the main activity adapter
-                         *   so that it can be loaded
-                         * */
-
                         // Company Name - index 0
                         // current price - index 1
                         StockDetailsAPI fetchStockDetails = new StockDetailsAPI();
@@ -117,7 +111,7 @@ public class AddStockActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             fetchProgress = new ProgressDialog(AddStockActivity.this);
-            fetchProgress.setMessage("Please wait...It is downloading");
+            fetchProgress.setMessage("Fetching Stock Info");
             fetchProgress.setIndeterminate(false);
             fetchProgress.setCancelable(false);
             fetchProgress.show();
@@ -163,5 +157,11 @@ public class AddStockActivity extends AppCompatActivity {
             Intent toMainActivity = new Intent(AddStockActivity.this, MainActivity.class);
             startActivity(toMainActivity);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stockdb.close();
     }
 }

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*      TESTING THE DATABASE CREATION           */
 
-        testDatabase();
+        stockDB = new StockDatabaseHelper(this);
 
         /*      TESTING THE DATABASE CREATION           */
 
@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         netProfitTextView = findViewById(R.id.profit_amount);
 
-        /*      Floating action button task                     */
         addStockBUtton = findViewById(R.id.fab);
         addStockBUtton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,53 +57,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(addStockIntent);
             }
         });
-        /*      Floating action button task                     */
 
-        /*
-         * @todo
-         *   Create a dedicated user class which will do the following
-         *       - Fetch user subscribed stocks
-         *       - Create an account in firebase so that all data stays online
-         *       - Have support for google account sign in
-         *       - Store the data online as well as local storage
-         * */
-
-        /*      To populate the recycler view with card         */
-        if (stockData.isEmpty()) {
+        if (stockDB.isEmpty()) {
             stockRecyclerView.setVisibility(View.GONE);
             noStockEnteredByUser.setVisibility(View.VISIBLE);
         } else {
             stockRecyclerView.setVisibility(View.VISIBLE);
             noStockEnteredByUser.setVisibility(View.GONE);
+            stockData = stockDB.getStockFromDB();
             createRecyclerView();
         }
-        /*      To populate the recycler view with card         */
 
-
-    }
-
-    private double getNetProfit(ArrayList<Stock> stockList) {
-        double prof = 0.0;
-        for (int i = 0; i < stockList.size(); i++) {
-            prof += stockList.get(i).getNetProfit();
-        }
-        return prof;
-    }
-
-    protected void getUserSubscribedStockList() {
-        stockData.add(new Stock("500696 ", "Hindustan Uniliver", 183.57
-                , 0, 100, 183.62));
-        stockData.add(new Stock("532540", "TCS Ltd", 1012.02
-                , 30, 10, 2156.5));
-        stockData.add(new Stock("500325 ", "Reliance Industries", 1043.8
-                , 0, 25, 900));
-    }
-
-    public void createRecyclerView() {
-        double netProfit = getNetProfit(stockData);
-        netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", netProfit));
-        stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockData);
-        stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
     }
 
     @Override
@@ -116,7 +79,40 @@ public class MainActivity extends AppCompatActivity {
         stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
     }
 
-    protected void testDatabase() {
-        stockDB = new StockDatabaseHelper(this);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stockDB.close();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (stockDB.isEmpty()) {
+            stockRecyclerView.setVisibility(View.GONE);
+            noStockEnteredByUser.setVisibility(View.VISIBLE);
+        } else {
+            stockRecyclerView.setVisibility(View.VISIBLE);
+            noStockEnteredByUser.setVisibility(View.GONE);
+            stockData = stockDB.getStockFromDB();
+            createRecyclerView();
+        }
+    }
+
+    private double getNetProfit(ArrayList<Stock> stockList) {
+        double prof = 0.0;
+        for (int i = 0; i < stockList.size(); i++) {
+            prof += stockList.get(i).getNetProfit();
+        }
+        return prof;
+    }
+
+    public void createRecyclerView() {
+        double netProfit = getNetProfit(stockData);
+        netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", netProfit));
+        stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockData);
+        stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
+    }
+
+
 }

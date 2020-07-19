@@ -2,11 +2,17 @@ package com.masquerade.app.stockearnings.utilities;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import com.masquerade.app.stockearnings.models.Stock;
+
+import java.util.ArrayList;
 
 public class StockDatabaseHelper extends SQLiteOpenHelper {
 
@@ -19,6 +25,7 @@ public class StockDatabaseHelper extends SQLiteOpenHelper {
     public static final String QUANTITY_BOUGHT_COL = "Qunatity_Bought";
     public static final String QUANTITY_RECEIVED_COL = "Quantity_Received";
     public static final String PROFIT_COL = "Profit";
+    public static final String IS_DATABASE_EMPTY = "SELECT count(*) FROM stock_details";
 
     public StockDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -52,6 +59,35 @@ public class StockDatabaseHelper extends SQLiteOpenHelper {
         cv.put(PROFIT_COL, profit);
         long result = stockdb.insert(TABLE_NAME, null, cv);
         return result != -1;
+    }
+
+    public boolean updateCurrentPrice(String scriptCode, double currentPrice) {
+        return true;
+    }
+
+    public boolean isEmpty() {
+        long numEntries = DatabaseUtils.queryNumEntries(this.getReadableDatabase(), TABLE_NAME);
+        return numEntries == 0;
+    }
+
+    public ArrayList<Stock> getStockFromDB() {
+        ArrayList<Stock> stockInDB = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            String scripCode = Integer.toString(res.getInt(res.getColumnIndex(SCRIP_CODE_COL)));
+            String companyName = res.getString(res.getColumnIndex(COMPANY_NAME_COL));
+            double purchasePrice = res.getDouble(res.getColumnIndex(PURCHASE_PRICE_COL));
+            double currentPrice = res.getDouble(res.getColumnIndex(CURRENT_PRICE_COL));
+            int quantityBought = res.getInt(res.getColumnIndex(QUANTITY_BOUGHT_COL));
+            int quantityReceived = res.getInt(res.getColumnIndex(QUANTITY_RECEIVED_COL));
+            Stock tempStock = new Stock(scripCode, companyName, purchasePrice, quantityReceived,
+                    quantityBought, currentPrice);
+            stockInDB.add(tempStock);
+            res.moveToNext();
+        }
+        return stockInDB;
     }
 
 }
