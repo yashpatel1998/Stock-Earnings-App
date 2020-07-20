@@ -55,8 +55,7 @@ public class AddStockActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent upIntent = NavUtils.getParentActivityIntent(AddStockActivity.this);
-                startActivity(upIntent);
+                finish();
             }
         });
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -154,8 +153,8 @@ public class AddStockActivity extends AppCompatActivity {
                 showToast("Stock inserted in databse");
             else
                 showToast("Something went wrong");
-            Intent toMainActivity = new Intent(AddStockActivity.this, MainActivity.class);
-            startActivity(toMainActivity);
+            fetchProgress.dismiss();
+            finish();
         }
     }
 

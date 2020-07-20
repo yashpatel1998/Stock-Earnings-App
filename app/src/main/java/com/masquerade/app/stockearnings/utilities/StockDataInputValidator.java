@@ -24,8 +24,8 @@ public class StockDataInputValidator {
                 throw new QuantityZeroException("Quantity of stock purchased should be positive");
             if (this.quantityReceived < 0)
                 throw new QuantityZeroException("Quantity Received cannot be negative");
-            if (this.purchasePrice < 0)
-                throw new QuantityZeroException("Purchase price cannot be negative");
+            if (this.purchasePrice <= 0)
+                throw new QuantityZeroException("Purchase price should pe positive");
             if (this.scripCode.length() != 6)
                 throw new InvalidScripCodeException("Scrip Code is invalid");
         }

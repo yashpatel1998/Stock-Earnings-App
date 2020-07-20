@@ -24,7 +24,6 @@ public class StockDatabaseHelper extends SQLiteOpenHelper {
     public static final String CURRENT_PRICE_COL = "Current_Price";
     public static final String QUANTITY_BOUGHT_COL = "Qunatity_Bought";
     public static final String QUANTITY_RECEIVED_COL = "Quantity_Received";
-    public static final String PROFIT_COL = "Profit";
     public static final String IS_DATABASE_EMPTY = "SELECT count(*) FROM stock_details";
 
     public StockDatabaseHelper(@Nullable Context context) {
@@ -36,7 +35,7 @@ public class StockDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME + " (Scrip_Code INTEGER PRIMARY KEY, Company_Name" +
                 " TEXT, Purhcase_Price REAL, Current_Price REAL, Qunatity_Bought INTEGER," +
-                "Quantity_Received INTEGER, Profit REAL) ");
+                "Quantity_Received INTEGER) ");
     }
 
     @Override
@@ -56,7 +55,6 @@ public class StockDatabaseHelper extends SQLiteOpenHelper {
         cv.put(CURRENT_PRICE_COL, currentPrice);
         cv.put(QUANTITY_BOUGHT_COL, quantityBought);
         cv.put(QUANTITY_RECEIVED_COL, quantityReceived);
-        cv.put(PROFIT_COL, profit);
         long result = stockdb.insert(TABLE_NAME, null, cv);
         return result != -1;
     }
@@ -87,7 +85,23 @@ public class StockDatabaseHelper extends SQLiteOpenHelper {
             stockInDB.add(tempStock);
             res.moveToNext();
         }
+        res.close();
         return stockInDB;
+    }
+
+    public boolean updateCurrentPrice(String scripCode, String companyName, double purchasePrice,
+                                      double currentPrice, int quantityBought, int quantityReceived) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SCRIP_CODE_COL, Integer.parseInt(scripCode));
+        cv.put(COMPANY_NAME_COL, companyName);
+        cv.put(PURCHASE_PRICE_COL, purchasePrice);
+        cv.put(CURRENT_PRICE_COL, currentPrice);
+        cv.put(QUANTITY_BOUGHT_COL, quantityBought);
+        cv.put(QUANTITY_RECEIVED_COL, quantityReceived);
+        int rowsAffected = db.update(TABLE_NAME, cv, "Scrip_Code = ?",
+                new String[]{scripCode});
+        return rowsAffected > 0;
     }
 
 }
