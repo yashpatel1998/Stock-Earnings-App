@@ -28,7 +28,7 @@ User entered information
 
 ### _Missing Functionalities_
 - Delete a particular stock
- Following functionalities will be added in the next release
+- Following functionalities will be added in the next release
  
  ---
  
