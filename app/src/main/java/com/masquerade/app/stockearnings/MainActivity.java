@@ -10,6 +10,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,6 +32,7 @@ import org.jsoup.nodes.Document;
 public class MainActivity extends AppCompatActivity {
 
     StockDatabaseHelper stockDB;
+    ImageButton refreshButton;
     RecyclerView stockRecyclerView;
     StockCardRecyclerViewAdapter stockCardRecyclerViewAdapter;
     TextView netProfitTextView;
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        StockCurrentPriceFetcher currentPriceFetcher = new StockCurrentPriceFetcher();
 
         stockDB = new StockDatabaseHelper(this);
 
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         noStockEnteredByUser = findViewById(R.id.noStockEnteredByUser);
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         netProfitTextView = findViewById(R.id.profit_amount);
+        refreshButton = findViewById(R.id.refresh_button);
 
         addStockBUtton = findViewById(R.id.fab);
         addStockBUtton.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StockCurrentPriceFetcher currentPriceFetcher = new StockCurrentPriceFetcher();
+                currentPriceFetcher.execute();
+                createRecyclerView();
+                netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
+            }
+        });
+
         if (stockDB.isEmpty()) {
             stockRecyclerView.setVisibility(View.GONE);
             noStockEnteredByUser.setVisibility(View.VISIBLE);
@@ -65,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
             stockRecyclerView.setVisibility(View.VISIBLE);
             noStockEnteredByUser.setVisibility(View.GONE);
             stockData = stockDB.getStockFromDB();
-            StockCurrentPriceFetcher currentPriceFetcher = new StockCurrentPriceFetcher();
             currentPriceFetcher.execute();
             createRecyclerView();
+            netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
         }
 
     }
@@ -79,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
         netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", netProfit));
         stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockData);
         stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
+        netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
+
     }
 
     @Override
@@ -98,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
             noStockEnteredByUser.setVisibility(View.GONE);
             stockData = stockDB.getStockFromDB();
             createRecyclerView();
+            netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
+
         }
     }
 
@@ -110,8 +130,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createRecyclerView() {
-        double netProfit = getNetProfit(stockData);
-        netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", netProfit));
         stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockData);
         stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
     }

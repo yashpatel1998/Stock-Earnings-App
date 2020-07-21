@@ -23,22 +23,33 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp">
 
-            <ImageView
+            <ImageButton
+                android:id="@+id/user_account_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:backgroundTint="@color/pureBlack"
-                android:src="@drawable/user_icon_36"
+                android:background="@drawable/user_icon_36"
                 android:clickable="true"
                 android:focusable="true"
                 android:contentDescription="@string/user_account_button_description" />
 
-            <ImageView
+            <ImageButton
+                android:background="@drawable/ic_baseline_refresh_32"
+                android:id="@+id/refresh_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/user_account_button"
+                android:src="@drawable/ic_baseline_refresh_32"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginRight="16dp"
+                android:contentDescription="@string/user_account_button_description" />
+
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:backgroundTint="@color/pureBlack"
-                android:src="@drawable/menu_icon_36"
+                android:background="@drawable/menu_icon_36"
                 android:clickable="true"
                 android:focusable="true"
                 android:contentDescription="@string/menu_button_description" />
