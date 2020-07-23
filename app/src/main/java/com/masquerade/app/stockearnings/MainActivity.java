@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         noStockEnteredByUser = findViewById(R.id.noStockEnteredByUser);
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         netProfitTextView = findViewById(R.id.profit_amount);
-        refreshButton = findViewById(R.id.refresh_button);
+//        refreshButton = findViewById(R.id.refresh_button);
 
         addStockBUtton = findViewById(R.id.fab);
         addStockBUtton.setOnClickListener(new View.OnClickListener() {
@@ -64,15 +64,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StockCurrentPriceFetcher currentPriceFetcher = new StockCurrentPriceFetcher();
-                currentPriceFetcher.execute();
-                createRecyclerView();
-                netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
-            }
-        });
+//        refreshButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                StockCurrentPriceFetcher currentPriceFetcher = new StockCurrentPriceFetcher();
+//                currentPriceFetcher.execute();
+//                createRecyclerView();
+//                netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
+//            }
+//        });
 
         if (stockDB.isEmpty()) {
             stockRecyclerView.setVisibility(View.GONE);
