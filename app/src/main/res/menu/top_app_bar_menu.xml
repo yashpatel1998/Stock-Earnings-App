@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/refresh"
+        android:icon="@drawable/ic_baseline_refresh_32"
+        android:title="@string/refresh_menu_button"
+        android:contentDescription="@string/refresh_menu_button_description"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_baseline_delete_32"
+        android:title="@string/delete_menu_button"
+        android:contentDescription="@string/delete_menu_button_description"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/more"
+        android:title="@string/more"
+        android:icon="@drawable/ic_baseline_more_vert_32"
+        app:showAsAction="ifRoom" />
+
+</menu>
