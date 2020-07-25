@@ -11,7 +11,7 @@
     <string name="purhcase_price">Purchase Price</string>
     <string name="quantity_received">Quantity Received</string>
     <string name="add_stock"> Add Stock</string>
-    <string name="no_user_stock">No stock present in database\nAdd stocks to see them here</string>
+    <string name="no_user_stock">Add stocks to see them here</string>
     <string name="refresh_menu_button"> Refresh </string>
     <string name="refresh_menu_button_description"> Refresh to get latest stock prices</string>
     <string name="delete_menu_button"> Delete </string>
