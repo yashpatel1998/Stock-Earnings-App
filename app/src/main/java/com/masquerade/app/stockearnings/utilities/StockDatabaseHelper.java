@@ -104,4 +104,8 @@ public class StockDatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+    public boolean deleteEntry(Stock stock) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME, SCRIP_CODE_COL + "=" + stock.getScripCode(), null) > 0;
+    }
 }

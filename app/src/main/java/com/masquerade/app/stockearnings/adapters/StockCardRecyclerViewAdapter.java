@@ -11,6 +11,7 @@ import com.masquerade.app.stockearnings.models.Stock;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -21,12 +22,14 @@ public class StockCardRecyclerViewAdapter extends RecyclerView.Adapter<StockCard
 
     Context currentContext;
     ArrayList<Stock> stock;
+    ItemTouchHelper.SimpleCallback cardTouchHelperCallback;
 
     public StockCardRecyclerViewAdapter(Context currentContext,
                                         ArrayList<Stock> stock) {
         this.currentContext = currentContext;
         this.stock = stock;
     }
+
 
     @NonNull
     @Override

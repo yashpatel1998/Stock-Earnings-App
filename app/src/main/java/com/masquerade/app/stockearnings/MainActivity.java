@@ -1,6 +1,8 @@
 package com.masquerade.app.stockearnings;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,12 +11,14 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.masquerade.app.stockearnings.adapters.StockCardRecyclerViewAdapter;
 import com.masquerade.app.stockearnings.models.Stock;
@@ -32,7 +36,7 @@ import org.jsoup.nodes.Document;
 public class MainActivity extends AppCompatActivity {
 
     StockDatabaseHelper stockDB;
-    ImageButton refreshButton;
+    MaterialToolbar topAppBar;
     RecyclerView stockRecyclerView;
     StockCardRecyclerViewAdapter stockCardRecyclerViewAdapter;
     TextView netProfitTextView;
@@ -40,12 +44,13 @@ public class MainActivity extends AppCompatActivity {
     TextView noStockEnteredByUser;
     ProgressDialog fetchNewCurrentPriceProgressbar;
     public static ArrayList<Stock> stockData = new ArrayList<>();
+    private StockCurrentPriceFetcher currentPriceFetcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        StockCurrentPriceFetcher currentPriceFetcher = new StockCurrentPriceFetcher();
+        currentPriceFetcher = new StockCurrentPriceFetcher();
 
         stockDB = new StockDatabaseHelper(this);
 
@@ -53,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         noStockEnteredByUser = findViewById(R.id.noStockEnteredByUser);
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         netProfitTextView = findViewById(R.id.profit_amount);
-//        refreshButton = findViewById(R.id.refresh_button);
+        topAppBar = findViewById(R.id.topAppBar);
 
         addStockBUtton = findViewById(R.id.fab);
         addStockBUtton.setOnClickListener(new View.OnClickListener() {
@@ -64,16 +69,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        refreshButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                StockCurrentPriceFetcher currentPriceFetcher = new StockCurrentPriceFetcher();
-//                currentPriceFetcher.execute();
-//                createRecyclerView();
-//                netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
-//            }
-//        });
+        topAppBar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.refresh_button: {
+                        currentPriceFetcher.execute();
+                        refreshRecyclerView();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
 
+    protected void refreshRecyclerView() {
         if (stockDB.isEmpty()) {
             stockRecyclerView.setVisibility(View.GONE);
             noStockEnteredByUser.setVisibility(View.VISIBLE);
@@ -81,22 +92,14 @@ public class MainActivity extends AppCompatActivity {
             stockRecyclerView.setVisibility(View.VISIBLE);
             noStockEnteredByUser.setVisibility(View.GONE);
             stockData = stockDB.getStockFromDB();
-            currentPriceFetcher.execute();
             createRecyclerView();
-            netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
         }
-
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        double netProfit = getNetProfit(stockData);
-        netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", netProfit));
-        stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockData);
-        stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
-        netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
-
+        refreshRecyclerView();
     }
 
     @Override
@@ -108,17 +111,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (stockDB.isEmpty()) {
-            stockRecyclerView.setVisibility(View.GONE);
-            noStockEnteredByUser.setVisibility(View.VISIBLE);
-        } else {
-            stockRecyclerView.setVisibility(View.VISIBLE);
-            noStockEnteredByUser.setVisibility(View.GONE);
-            stockData = stockDB.getStockFromDB();
-            createRecyclerView();
-            netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
-
-        }
+        refreshRecyclerView();
     }
 
     private double getNetProfit(ArrayList<Stock> stockList) {
@@ -131,6 +124,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void createRecyclerView() {
         stockCardRecyclerViewAdapter = new StockCardRecyclerViewAdapter(this, stockData);
+        ItemTouchHelper.SimpleCallback cardTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                if (stockDB.deleteEntry(stockData.get(viewHolder.getAdapterPosition()))) {
+                    stockData.remove(viewHolder.getAdapterPosition());
+                    stockCardRecyclerViewAdapter.notifyDataSetChanged();
+                    if (stockDB.isEmpty()) {
+                        stockRecyclerView.setVisibility(View.GONE);
+                        noStockEnteredByUser.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        };
+        new ItemTouchHelper(cardTouchHelperCallback).attachToRecyclerView(stockRecyclerView);
+        netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
         stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
     }
 

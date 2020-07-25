@@ -128,13 +128,14 @@ public class AddStockActivity extends AppCompatActivity {
                 Log.d("doInBackground", "Copmany Name : " + companyName);
                 Log.d("doInBackground", "Current Value : " + stockCurrentValue);
                 if (companyName.isEmpty() || stockCurrentValue.isEmpty()) {
-                    throw new InvalidScripCodeException("Srip Code Entered is Invalid");
+                    throw new InvalidScripCodeException("Srip Code entered is Invalid");
                 } else {
                     Log.d("doInBackground", "Stock data fetched");
                     stockData.add(companyName);
                     stockData.add(stockCurrentValue);
                 }
             } catch (Exception e) {
+                showToast(e.getMessage());
                 e.printStackTrace();
             }
             return stockData;
