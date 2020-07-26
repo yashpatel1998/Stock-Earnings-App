@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 if (stockDB.deleteEntry(stockData.get(viewHolder.getAdapterPosition()))) {
                     stockData.remove(viewHolder.getAdapterPosition());
+                    netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
                     stockCardRecyclerViewAdapter.notifyDataSetChanged();
                     if (stockDB.isEmpty()) {
                         stockRecyclerView.setVisibility(View.GONE);
