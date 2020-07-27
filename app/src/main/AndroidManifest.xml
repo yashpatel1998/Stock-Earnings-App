@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.masquerade.app.stockearnings">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
@@ -24,5 +24,4 @@
                 android:value=".MainActivity" />
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

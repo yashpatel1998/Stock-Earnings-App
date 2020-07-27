@@ -17,6 +17,7 @@ import android.view.ViewManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,14 +45,10 @@ public class MainActivity extends AppCompatActivity {
     TextView noStockEnteredByUser;
     ProgressDialog fetchNewCurrentPriceProgressbar;
     public static ArrayList<Stock> stockData = new ArrayList<>();
-    private StockCurrentPriceFetcher currentPriceFetcher;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        currentPriceFetcher = new StockCurrentPriceFetcher();
-
         stockDB = new StockDatabaseHelper(this);
 
         stockRecyclerView = findViewById(R.id.stock_card_recyclerview);
@@ -74,9 +71,18 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.refresh_button: {
-                        currentPriceFetcher.execute();
-                        refreshRecyclerView();
-                        return true;
+                        try {
+                            if (stockData.isEmpty()) {
+                                showToast("Nothing to refresh");
+                            } else {
+                                refreshRecyclerView();
+                                showToast("Refreshed");
+                                return true;
+                            }
+                        } catch (IllegalStateException e) {
+                            showToast("Already Refreshed");
+                        }
+                        return false;
                     }
                 }
                 return false;
@@ -92,14 +98,13 @@ public class MainActivity extends AppCompatActivity {
             stockRecyclerView.setVisibility(View.VISIBLE);
             noStockEnteredByUser.setVisibility(View.GONE);
             stockData = stockDB.getStockFromDB();
+            new StockCurrentPriceFetcher().execute();
             createRecyclerView();
         }
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        refreshRecyclerView();
+    protected void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -147,6 +152,12 @@ public class MainActivity extends AppCompatActivity {
         netProfitTextView.setText(String.format(Locale.ENGLISH, "%.2f", getNetProfit(stockData)));
         stockRecyclerView.setAdapter(stockCardRecyclerViewAdapter);
     }
+
+    /**
+     * **********************************************************************************************
+     * Async Task Class                                       *
+     * **********************************************************************************************
+     */
 
     private class StockCurrentPriceFetcher extends AsyncTask<Void, Void, Void> {
 
