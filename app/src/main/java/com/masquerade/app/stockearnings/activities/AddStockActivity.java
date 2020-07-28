@@ -1,6 +1,5 @@
 package com.masquerade.app.stockearnings.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +30,6 @@ public class AddStockActivity extends AppCompatActivity {
     int quantity, quantityReceived;
     String scripCode, progressMessage;
     double purchasePrice;
-    ProgressDialog fetchProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
