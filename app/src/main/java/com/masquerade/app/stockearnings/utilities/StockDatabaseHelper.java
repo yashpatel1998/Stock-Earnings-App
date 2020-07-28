@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -45,8 +44,7 @@ public class StockDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean insertData(String scripCode, String companyName, double purchasePrice,
-                              double currentPrice, int quantityBought, int quantityReceived,
-                              double profit) {
+                              double currentPrice, int quantityBought, int quantityReceived) {
         SQLiteDatabase stockdb = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(SCRIP_CODE_COL, Integer.parseInt(scripCode));
@@ -82,6 +80,7 @@ public class StockDatabaseHelper extends SQLiteOpenHelper {
             int quantityReceived = res.getInt(res.getColumnIndex(QUANTITY_RECEIVED_COL));
             Stock tempStock = new Stock(scripCode, companyName, purchasePrice, quantityReceived,
                     quantityBought, currentPrice);
+            tempStock.calculateProfit();
             stockInDB.add(tempStock);
             res.moveToNext();
         }
