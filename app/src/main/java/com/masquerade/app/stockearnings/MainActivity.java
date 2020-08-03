@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(addStockIntent);
             }
         });
-
+        refreshRecyclerView(false, false);
         topAppBar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -159,14 +159,13 @@ public class MainActivity extends AppCompatActivity {
  * @todo
  *
  * @possible_features
- *       1) Delete Stock option from the database and list
- *       2) Google sign in so everything is stored in the cloud
+ *       1) Google sign in so everything is stored in the cloud
  *           - When user sends request to get data the server must
  *               # Fetch new current prices from the url and then send the data to user
- *       3) SearchBar
- *       4) Keep track of earnings like daily, weekly and monthly
+ *       2) SearchBar
+ *       3) Keep track of earnings like daily, weekly and monthly
  *           - Have three bars above the app selection interface
- *       5) Machine Learning to predict stock prices
- *
+ *       4) Machine Learning to predict stock prices
+ *       5) Add a portfolio option where protfolio for individual users can be created
  *
  * */

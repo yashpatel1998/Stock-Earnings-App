@@ -1,4 +1,5 @@
 <resources>
+    <string name="my_portfolio">My Portfolio</string>
     <string name="app_name">Stock Earnings</string>
     <string name="sample_profit_value">0.0</string>
     <string name="profit">Net Profit</string>
@@ -17,4 +18,6 @@
     <string name="delete_menu_button"> Delete </string>
     <string name="delete_menu_button_description"> Delete stock added to the list</string>
     <string name="more">More Options</string>
+    <string name="BSE_Sensex_Current_Points">BSE : </string>
+    <string name="NSECurrent_Points">NSE : </string>
 </resources>
