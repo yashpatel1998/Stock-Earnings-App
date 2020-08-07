@@ -22,6 +22,8 @@ import java.util.ArrayList;
 public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
 
     private final String baseUrl = "https://m.bseindia.com/StockReach.aspx?scripcd=";
+    private final String BSESensexURL = "https://www.bseindia.com/sensex/code/16/";
+    private final String NSEURL = "https://www1.nseindia.com/";
 
     private Context activityContext;
     private String scripCode;
@@ -50,12 +52,10 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
                                      String progressDialogMessage, StockDatabaseHelper stockDB,
                                      ArrayList<Stock> stockData) {
         this.activityContext = ctx;
-        this.scripCode = scripCode;
         this.progressDialogMessage = progressDialogMessage;
         this.stockData = stockData;
         this.stockDB = stockDB;
     }
-
 
     @Override
     protected void onPreExecute() {
@@ -71,32 +71,9 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         try {
             if (stockData == null && this.activityContext instanceof AddStockActivity) {
-                String stockURL = baseUrl + this.scripCode;
-                Log.d("AddStockActivity async-", stockURL);
-                Document stockWebsite = Jsoup.connect(stockURL).get();
-                this.companyName = stockWebsite.getElementById("spanCname").text();
-                this.currentPrice = stockWebsite.getElementById("strongCvalue").text();
-                Log.d("doInBackground", "Copmany Name : " + companyName);
-                Log.d("doInBackground", "Current Value : " + this.currentPrice);
-                if (companyName.isEmpty() || this.currentPrice.isEmpty()) {
-                    throw new InvalidScripCodeException("Srip Code entered is Invalid");
-                } else {
-                    Log.d("AddStockActivity", "Stock data fetched");
-                }
+                addStockActivityStockDataBackgroundFetcher();
             } else if (stockData != null && this.activityContext instanceof MainActivity) {
-                for (int i = 0; i < stockData.size(); i++) {
-                    Stock singleStock = stockData.get(i);
-                    String stockURL = baseUrl + singleStock.getScripCode();
-                    Document stockWebsite = Jsoup.connect(stockURL).get();
-                    String stockCurrentValue = stockWebsite.getElementById("strongCvalue").text();
-                    Log.d("MainAct -doInBackground", "Current Value : " + stockCurrentValue);
-                    if (stockCurrentValue.isEmpty()) {
-                        throw new IOException("Unable to fetch details");
-                    } else {
-                        Log.d("doInBackground", "Stock data fetched");
-                        stockData.get(i).setCurrentPrice(Double.parseDouble(stockCurrentValue));
-                    }
-                }
+                mainActivityStockDataBackgroundFetcher();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,6 +120,37 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
         int toastDuration = Toast.LENGTH_SHORT;
         Toast quantityErrorToast = Toast.makeText(this.activityContext, message, toastDuration);
         quantityErrorToast.show();
+    }
+
+    private void mainActivityStockDataBackgroundFetcher() throws IOException {
+        for (int i = 0; i < stockData.size(); i++) {
+            Stock singleStock = stockData.get(i);
+            String stockURL = baseUrl + singleStock.getScripCode();
+            Document stockWebsite = Jsoup.connect(stockURL).get();
+            String stockCurrentValue = stockWebsite.getElementById("strongCvalue").text();
+            Log.d("MainAct -doInBackground", "Current Value : " + stockCurrentValue);
+            if (stockCurrentValue.isEmpty()) {
+                throw new IOException("Unable to fetch details");
+            } else {
+                Log.d("doInBackground", "Stock data fetched");
+                stockData.get(i).setCurrentPrice(Double.parseDouble(stockCurrentValue));
+            }
+        }
+    }
+
+    private void addStockActivityStockDataBackgroundFetcher() throws Exception {
+        String stockURL = baseUrl + this.scripCode;
+        Log.d("AddStockActivity async-", stockURL);
+        Document stockWebsite = Jsoup.connect(stockURL).get();
+        this.companyName = stockWebsite.getElementById("spanCname").text();
+        this.currentPrice = stockWebsite.getElementById("strongCvalue").text();
+        Log.d("doInBackground", "Copmany Name : " + companyName);
+        Log.d("doInBackground", "Current Value : " + this.currentPrice);
+        if (companyName.isEmpty() || this.currentPrice.isEmpty()) {
+            throw new InvalidScripCodeException("Srip Code entered is Invalid");
+        } else {
+            Log.d("AddStockActivity", "Stock data fetched");
+        }
     }
 
 }

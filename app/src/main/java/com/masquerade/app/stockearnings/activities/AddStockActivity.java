@@ -63,8 +63,6 @@ public class AddStockActivity extends AppCompatActivity {
                         new StockDataFetcherAsyncTask(AddStockActivity.this, progressMessage,
                                 stockdb, scripCode, purchasePrice, quantity,
                                 quantityReceived).execute();
-
-                        // Add Stock to sql data base
                     }
                 } catch (QuantityZeroException quantityException) {
                     String message = quantityException.getMessage();
