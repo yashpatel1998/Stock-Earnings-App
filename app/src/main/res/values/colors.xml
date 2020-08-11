@@ -10,4 +10,6 @@
     <color name="pureBlack">#000000</color>
     <color name="pureWhite">#FFFFFF</color>
     <color name="greyish">#DEDEDE</color>
+    <color name="stockProfit">#0f9d58</color>
+    <color name="stockLoss">#d23f31</color>
 </resources>

@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton addStockBUtton;
     TextView noStockEnteredByUser;
     ProgressDialog fetchNewCurrentPriceProgressbar;
+    ArrayList<TextView> bseData;
     public static ArrayList<Stock> stockData = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             if (!isOnRestart && !isOnResume) {
                 new StockDataFetcherAsyncTask(MainActivity.this,
                         "Updating Current Prices\nPlease Wait ...",
-                        stockDB, stockData).execute();
+                        stockDB, stockData, bseData).execute();
             }
             createRecyclerView();
         }

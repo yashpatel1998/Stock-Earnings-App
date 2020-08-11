@@ -3,11 +3,14 @@ package com.masquerade.app.stockearnings.asyncTask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.masquerade.app.stockearnings.MainActivity;
+import com.masquerade.app.stockearnings.R;
 import com.masquerade.app.stockearnings.activities.AddStockActivity;
 import com.masquerade.app.stockearnings.exceptions.InvalidScripCodeException;
 import com.masquerade.app.stockearnings.models.Stock;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
 public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
 
     private final String baseUrl = "https://m.bseindia.com/StockReach.aspx?scripcd=";
-    private final String BSESensexURL = "https://www.bseindia.com/sensex/code/16/";
+    private final String BSESensexURL = "https://m.bseindia.com/index.aspx";
     private final String NSEURL = "https://www1.nseindia.com/";
 
     private Context activityContext;
@@ -34,6 +37,8 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
     private String currentPrice, companyName;
     private int quantityReceived, quantity;
     private double purchasePrice;
+    private String BSECurrentValue, BSEChangeValue;
+    ArrayList<TextView> bsePriceTextViews;
 
     public StockDataFetcherAsyncTask(Context ctx,
                                      String progressDialogMessage, StockDatabaseHelper stockDB,
@@ -50,11 +55,12 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
 
     public StockDataFetcherAsyncTask(Context ctx,
                                      String progressDialogMessage, StockDatabaseHelper stockDB,
-                                     ArrayList<Stock> stockData) {
+                                     ArrayList<Stock> stockData, ArrayList<TextView> bseViews) {
         this.activityContext = ctx;
         this.progressDialogMessage = progressDialogMessage;
         this.stockData = stockData;
         this.stockDB = stockDB;
+        this.bsePriceTextViews = bseViews;
     }
 
     @Override
@@ -74,6 +80,7 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
                 addStockActivityStockDataBackgroundFetcher();
             } else if (stockData != null && this.activityContext instanceof MainActivity) {
                 mainActivityStockDataBackgroundFetcher();
+                getBSECurrentPrice();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,6 +114,15 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
                     if (!stockDB.updateCurrentPrice(scripCode, companyName, purchasePrice,
                             currentPrice, quantityBought, quantityReceived)) {
                         throw new Exception("Error during updating current price");
+                    }
+                    TextView bseCurrentValue = ((MainActivity) this.activityContext).findViewById(R.id.BSE_Current_value);
+                    bseCurrentValue.setText(BSECurrentValue);
+                    TextView bseChangeValue = ((MainActivity) this.activityContext).findViewById(R.id.BSE_Value_Change);
+                    bseChangeValue.setText(this.BSEChangeValue);
+                    if (Double.parseDouble(this.BSEChangeValue) < 0) {
+                        bseChangeValue.setTextColor(Color.parseColor("#d23f31"));
+                    } else {
+                        bseChangeValue.setTextColor(Color.parseColor("#0f9d58"));
                     }
                 }
             }
@@ -153,4 +169,11 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    private void getBSECurrentPrice() throws IOException {
+        Document stockWebsite = Jsoup.connect(BSESensexURL).get();
+        String currentPrice = stockWebsite.getElementById("UcHeaderMenu1_sensexLtp").text();
+        String priceChange = stockWebsite.getElementById("UcHeaderMenu1_sensexChange").text();
+        this.BSEChangeValue = priceChange;
+        this.BSECurrentValue = currentPrice;
+    }
 }
