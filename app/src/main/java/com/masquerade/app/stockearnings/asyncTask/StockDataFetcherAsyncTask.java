@@ -37,7 +37,6 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
     private String currentPrice, companyName;
     private int quantityReceived, quantity;
     private double purchasePrice;
-    private String BSECurrentValue, BSEChangeValue;
     ArrayList<TextView> bsePriceTextViews;
 
     public StockDataFetcherAsyncTask(Context ctx,
@@ -75,12 +74,12 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
+
         try {
             if (stockData == null && this.activityContext instanceof AddStockActivity) {
                 addStockActivityStockDataBackgroundFetcher();
             } else if (stockData != null && this.activityContext instanceof MainActivity) {
                 mainActivityStockDataBackgroundFetcher();
-                getBSECurrentPrice();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,21 +114,13 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
                             currentPrice, quantityBought, quantityReceived)) {
                         throw new Exception("Error during updating current price");
                     }
-                    TextView bseCurrentValue = ((MainActivity) this.activityContext).findViewById(R.id.BSE_Current_value);
-                    bseCurrentValue.setText(BSECurrentValue);
-                    TextView bseChangeValue = ((MainActivity) this.activityContext).findViewById(R.id.BSE_Value_Change);
-                    bseChangeValue.setText(this.BSEChangeValue);
-                    if (Double.parseDouble(this.BSEChangeValue) < 0) {
-                        bseChangeValue.setTextColor(Color.parseColor("#d23f31"));
-                    } else {
-                        bseChangeValue.setTextColor(Color.parseColor("#0f9d58"));
-                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         this.progressBar.dismiss();
+
     }
 
     protected void showToast(String message) {
@@ -137,6 +128,12 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
         Toast quantityErrorToast = Toast.makeText(this.activityContext, message, toastDuration);
         quantityErrorToast.show();
     }
+
+    /*
+    *   @function
+    *       Fetch the stock prices and data based on the given scripcode.
+    *       Populate the same data in a stock arraylist
+    * */
 
     private void mainActivityStockDataBackgroundFetcher() throws IOException {
         for (int i = 0; i < stockData.size(); i++) {
@@ -167,13 +164,5 @@ public class StockDataFetcherAsyncTask extends AsyncTask<Void, Void, Void> {
         } else {
             Log.d("AddStockActivity", "Stock data fetched");
         }
-    }
-
-    private void getBSECurrentPrice() throws IOException {
-        Document stockWebsite = Jsoup.connect(BSESensexURL).get();
-        String currentPrice = stockWebsite.getElementById("UcHeaderMenu1_sensexLtp").text();
-        String priceChange = stockWebsite.getElementById("UcHeaderMenu1_sensexChange").text();
-        this.BSEChangeValue = priceChange;
-        this.BSECurrentValue = currentPrice;
     }
 }

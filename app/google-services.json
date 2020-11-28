@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "707788054920",
+    "firebase_url": "https://stock-earnings-60bc2.firebaseio.com",
+    "project_id": "stock-earnings-60bc2",
+    "storage_bucket": "stock-earnings-60bc2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707788054920:android:95fd1bb4781c6fbf301a3d",
+        "android_client_info": {
+          "package_name": "com.masquerade.app.stockearnings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707788054920-83rupi7tuhleigacjt5so68l9siaukmn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPZnOjF1EflF_m6Nh_Nt7dUelc2KyeAC4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707788054920-83rupi7tuhleigacjt5so68l9siaukmn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

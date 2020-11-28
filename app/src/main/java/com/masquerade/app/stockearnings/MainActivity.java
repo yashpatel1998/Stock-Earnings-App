@@ -18,6 +18,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.masquerade.app.stockearnings.activities.AddStockActivity;
 import com.masquerade.app.stockearnings.adapters.StockCardRecyclerViewAdapter;
+import com.masquerade.app.stockearnings.asyncTask.MarketCurrentValueFetcherAsyncTask;
 import com.masquerade.app.stockearnings.asyncTask.StockDataFetcherAsyncTask;
 import com.masquerade.app.stockearnings.models.Stock;
 import com.masquerade.app.stockearnings.utilities.StockDatabaseHelper;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         netProfitTextView = findViewById(R.id.profit_amount);
         topAppBar = findViewById(R.id.topAppBar);
-
+        new MarketCurrentValueFetcherAsyncTask(this).execute();
         addStockBUtton = findViewById(R.id.fab);
         addStockBUtton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.refresh_button: {
                         try {
                             if (stockData.isEmpty()) {
-                                showToast("Nothing to refresh");
+                                new MarketCurrentValueFetcherAsyncTask(MainActivity.this).execute();
+                                showToast("Fetched Market Value");
                             } else {
                                 refreshRecyclerView(false, false);
                                 showToast("Refreshed");
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void refreshRecyclerView(boolean isOnResume, boolean isOnRestart) {
+        new MarketCurrentValueFetcherAsyncTask(this).execute();
         if (stockDB.isEmpty()) {
             stockRecyclerView.setVisibility(View.GONE);
             noStockEnteredByUser.setVisibility(View.VISIBLE);
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 new StockDataFetcherAsyncTask(MainActivity.this,
                         "Updating Current Prices\nPlease Wait ...",
                         stockDB, stockData, bseData).execute();
+
             }
             createRecyclerView();
         }
