@@ -32,34 +32,39 @@
             android:textColor="@color/pureBlack"
             android:textFontWeight="700" />
     </androidx.appcompat.widget.LinearLayoutCompat>
-
     <include
-        android:id="@+id/current_value_card"
-        layout="@layout/home_screen_cards"
+        layout="@layout/indices_price_card_layout"
+        android:id="@+id/indices_price_card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amount_invested_card" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat"
+    <include
+        android:id="@+id/current_value_card"
+        layout="@layout/home_screen_cards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indices_price_card_layout" />
     <include
         android:id="@+id/amount_invested_card"
         layout="@layout/home_screen_cards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+        app:layout_constraintTop_toBottomOf="@+id/current_value_card" />
     <include
         android:id="@+id/profit_loss_card"
         layout="@layout/home_screen_cards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_value_card" />
+        app:layout_constraintTop_toBottomOf="@+id/amount_invested_card" />
     <!--        app:layout_constraintTop_toBottomOf="@id/amount_invested_card"/>-->
     <!--    <include layout="@layout/home_screen_cards"-->
     <!--        android:id="amount_invested_card"/>-->
@@ -73,6 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+            android:backgroundTint="#CDCDCD"
             app:navigationIcon="@drawable/ic_menu_24dp"
             app:menu="@menu/bottom_app_bar"
             />
